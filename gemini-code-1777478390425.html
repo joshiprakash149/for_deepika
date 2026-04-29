@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Special Message</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #ffe4e6; overflow: hidden; font-family: sans-serif; }
+        .heart { position: absolute; color: #fb7185; animation: float 3s ease-in infinite; z-index: 1; }
+        @keyframes float { 0% { transform: translateY(100vh) scale(0); opacity: 1; } 100% { transform: translateY(-10vh) scale(1.5); opacity: 0; } }
+        #password-screen { position: fixed; inset: 0; background: #ffe4e6; z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    </style>
+</head>
+<body>
+
+    <div id="password-screen">
+        <div class="bg-white p-8 rounded-3xl shadow-xl text-center">
+            <h2 class="text-2xl font-bold text-rose-600 mb-4">Enter Password to Unlock ❤️</h2>
+            <input type="text" id="passInput" class="border-2 border-rose-300 rounded-lg p-2 mb-4 text-center focus:outline-none focus:border-rose-500" placeholder="Password here...">
+            <br>
+            <button onclick="checkPassword()" class="bg-rose-500 text-white px-6 py-2 rounded-full font-bold hover:bg-rose-600">Unlock</button>
+            <p id="errorMsg" class="text-red-500 mt-2 hidden">Wrong password! Hint: It's your name?</p>
+        </div>
+    </div>
+
+    <div class="flex flex-col items-center justify-center h-screen">
+        <div id="main-card" class="bg-white p-8 rounded-3xl shadow-2xl text-center z-10 max-w-sm mx-4">
+            <img id="gif" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHp1eHp3Znd4ZzR4ZzR4ZzR4ZzR4ZzR4ZzR4ZzR4ZzR4ZzR4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/c76IJLufpNUMo/giphy.gif" alt="Cute bear" class="w-48 mx-auto mb-4 rounded-lg">
+            <h1 id="question" class="text-3xl font-bold text-rose-600 mb-6">Will you be my Valentine? ❤️</h1>
+            
+            <div class="flex gap-4 justify-center relative h-12" id="button-container">
+                <button id="yesBtn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-8 rounded-full transition-all transform hover:scale-110">
+                    YES!
+                </button>
+                <button id="noBtn" class="bg-rose-500 text-white font-bold py-2 px-8 rounded-full transition-all absolute" style="left: 140px;">
+                    No
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function checkPassword() {
+            const input = document.getElementById('passInput').value;
+            // Checks for OMIKA (ignores case)
+            if (input.toUpperCase() === "OMIKA") {
+                document.getElementById('password-screen').classList.add('hidden');
+            } else {
+                document.getElementById('errorMsg').classList.remove('hidden');
+            }
+        }
+
+        const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.getElementById('yesBtn');
+        const gif = document.getElementById('gif');
+        const question = document.getElementById('question');
+
+        noBtn.addEventListener('mouseover', moveButton);
+        noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); moveButton(); });
+
+        function moveButton() {
+            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = x + 'px';
+            noBtn.style.top = y + 'px';
+        }
+
+        yesBtn.addEventListener('click', () => {
+            document.getElementById('button-container').classList.add('hidden');
+            question.innerHTML = "YAY! I Knew You'd Say Yes! 🥰✨";
+            // Happy Couple Image
+            gif.src = "http://googleusercontent.com/image_collection/image_retrieval/14179296697959285642_0";
+            
+            setInterval(createHeart, 300);
+        });
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 3000);
+        }
+    </script>
+</body>
+</html>
